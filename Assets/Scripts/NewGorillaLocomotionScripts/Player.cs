@@ -104,6 +104,51 @@
             return transformToModify.position + transformToModify.rotation * offsetVector;
         }
 
+        // ------------------------------------------------------------------
+        // NEW: Teleport support.
+        //
+        // Moves the rig so the head lands on targetHeadPosition, and resets
+        // all the internal state that a teleporter script would care about:
+        // zeroes velocity/velocity history, snaps hand followers to their
+        // new post-teleport positions, and clears the "was touching" flags
+        // so a hand that was mid-grab can't drag the rig back toward where
+        // it just came from.
+        //
+        // Note: this does NOT depenetrate the rig from geometry it might
+        // land inside. If your teleport destinations can overlap colliders,
+        // add an overlap check against bodyCollider/headCollider here and
+        // push the rig out along the penetration normal.
+        // ------------------------------------------------------------------
+        public void TeleportTo(Vector3 targetHeadPosition)
+        {
+            Vector3 offset = targetHeadPosition - headCollider.transform.position;
+            transform.position += offset;
+
+            if (playerRigidBody != null)
+                playerRigidBody.linearVelocity = Vector3.zero;
+
+            currentVelocity = Vector3.zero;
+            denormalizedVelocityAverage = Vector3.zero;
+
+            if (velocityHistory != null)
+            {
+                for (int i = 0; i < velocityHistory.Length; i++)
+                    velocityHistory[i] = Vector3.zero;
+            }
+            velocityIndex = 0;
+
+            lastPosition = transform.position;
+            lastHeadPosition = headCollider.transform.position;
+
+            leftHandFollower.position = CurrentLeftHandPosition();
+            rightHandFollower.position = CurrentRightHandPosition();
+            lastLeftHandPosition = leftHandFollower.position;
+            lastRightHandPosition = rightHandFollower.position;
+
+            wasLeftHandTouching = false;
+            wasRightHandTouching = false;
+        }
+
         private void Update()
         {
             bool leftHandColliding = false;
