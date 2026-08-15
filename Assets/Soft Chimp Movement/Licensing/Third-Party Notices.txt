@@ -1,0 +1,18 @@
+**Third-Party Notices**
+
+This project includes third-party components, libraries, or assets. Each is attributed below with its corresponding license, or a notice is provided if no formal license exists.
+
+--------------------------------------------------------------------------------  
+
+**1. Asset: Easy Inputs (Custom Fixed Version)**  
+Original Package: Included with SCL  
+
+**License Details:**  
+The original package is available at the following link:  
+Easy Inputs GitHub Repository: https://github.com/XDEE2/EasyInputs/tree/main
+
+This asset is fully open-source and does not include a formal license. As such, it is used here under the assumption of permissive use.
+
+--------------------------------------------------------------------------------  
+
+Let me know if you want to make it even more concise or adapt it for a markdown file or credits screen.
